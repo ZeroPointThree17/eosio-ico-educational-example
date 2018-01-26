@@ -1,0 +1,1 @@
+eosc -H testnet1.eos.io -p 80 push message utoken transfer '{"from":"gqztsnq", "to":"utoken", "quantity":{"quantity":"100"}, "memo":"the memo"}' -S gqztsnq -S utoken --permission gqztsnq@active
