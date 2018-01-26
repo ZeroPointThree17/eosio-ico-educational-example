@@ -1,0 +1,8 @@
+eosc -H testnet1.eos.io -p 80 push message utoken transfer '{"from":"gqztsnq", "to":"utoken", "quantity":{"quantity":"100"}, "memo":"the memo"}' -S gqztsnq -S utoken --permission gqztsnq@active
+eosc -H testnet1.eos.io -p 80 push message eos transfer '{"from":"gqztsnq", "to":"utoken", "amount":"10000", "memo":"the memo"}' -S gqztsnq -S utoken --permission gqztsnq@active
+
+eosc -H testnet1.eos.io -p 80 get account gqztsnq
+eosc -H testnet1.eos.io -p 80 get account utoken
+
+eosc -H testnet1.eos.io -p 80 get table gqztsnq utoken account
+eosc -H testnet1.eos.io -p 80 get table utoken utoken account
