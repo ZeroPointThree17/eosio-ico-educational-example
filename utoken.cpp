@@ -10,9 +10,7 @@ namespace UTOKEN {
    using namespace eosio;
 
    uint64_t tokens_per_eos = 3000ll*1000000000ll;
-   uint64_t leftover_eos = 0;
-   uint64_t max_supply = ((1000000000ll)+6000)*1000000000ll;
-//   uint64_t max_supply = 1500ll*1000000000ll;
+   uint64_t max_supply = ((1000000000ll)+6000ll)*1000000000ll;; // max supply + small buffer (9 decimals)
    time end_time = (unsigned long)1514659067;
 
    ///  When storing accounts, check for empty balance and remove account
@@ -30,8 +28,9 @@ namespace UTOKEN {
 
 	  auto from = get_account( transfer_msg.from );
 	  auto to   = get_account( transfer_msg.to );
+	  auto token_account = get_account( N(utoken) );
 
-	  if (to.balance.quantity < (6000*1000000000ll) || now() > end_time){
+	  if (token_account.balance.quantity < (6000*1000000000ll) || now() > end_time){
 		  require_notice( transfer_msg.to, transfer_msg.from );
 		  require_auth( transfer_msg.from );
 
@@ -47,17 +46,14 @@ namespace UTOKEN {
 
    void accept_contribution( eosio::transfer transfer_msg ) {
 	  auto from = get_account( transfer_msg.from );
-	  auto to = get_account( transfer_msg.to );
+	  auto token_account = get_account( N(utoken) );
 
-	  if (to.balance.quantity < (6000*1000000000ll) && now() < end_time){
+	  if (token_account.balance.quantity < (6000*1000000000ll) && now() < end_time){
 
 		  auto token_quantity = (transfer_msg.quantity.quantity * tokens_per_eos) / 10000;
 
 		  if(token_quantity > to.balance.quantity){
 			  assert( 1 == 2,  "Amount contributed would result in exceeding supply amount. Try contributing a smaller amount.");
-//			  token_quantity = to.balance.quantity;
-//			  leftover_eos = transfer_msg.quantity.quantity - (((token_quantity*10)/tokens_per_eos)*1000);
-//			  transfer_msg.quantity.quantity = leftover_eos;
 		  }
 
 		  from.balance.quantity += token_quantity;
